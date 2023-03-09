@@ -56,3 +56,4 @@ panierBtn.addEventListener("click", ajoutPanier =>{
     //}
 
 })
+a
