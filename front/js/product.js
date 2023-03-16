@@ -41,7 +41,11 @@ panierBtn.addEventListener("click", ajoutPanier =>{
         console.log("Nombre : " + choixNombre);
 
     //Bouton panier & Panier
-    let panier = []
+    let panier = {
+        id:"",
+        couleur:"",
+        quantite: "",  
+    }
     if (choixCouleur == ""){
         alert("Veuillez choisir une couleur");
     }
@@ -49,10 +53,9 @@ panierBtn.addEventListener("click", ajoutPanier =>{
         alert("Veuillez choisir une quantité");
     }
     if(choixCouleur != "" && choixNombre != 0){
-
+    panier.id = idSeul;
+    panier.couleur = choixCouleur;
+    panier.quantite = choixNombre;
+    localStorage.setItem('panier', JSON.stringify(panier));
     }
-    //if (panier.length == 0){
-            //alert("Votre panier est vide");
-    //}
-
 })
