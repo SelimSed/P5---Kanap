@@ -9,6 +9,8 @@ dataProduit.then(async (reponseData) => {
     let produit = await reponseData.json()
     console.log(produit);
 
+//Création d'une boucle pour injecter les données produit par produit
+
 
 //Injecter les données
 document.querySelector('#cart__items').innerHTML +=
@@ -33,5 +35,4 @@ document.querySelector('#cart__items').innerHTML +=
   </div>
 </div>
 </article>`
-
 })

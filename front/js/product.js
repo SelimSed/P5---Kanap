@@ -26,36 +26,61 @@ dataProduit.then(async (reponseData) => {
     }
     document.querySelector('#colors').innerHTML = options;
 })
+
+let panier = []
+
 //Ajout panier
 let panierBtn = document.querySelector("#addToCart");
 panierBtn.addEventListener("click", ajoutPanier =>{
 
-    //Couleur
-    let couleurOk = document.querySelector("#colors")
-    let choixCouleur = couleurOk.value;
-        console.log("Couleur : " + choixCouleur);
-
-    //Quantité
-    let nombreOk = document.querySelector("#quantity");
-    let choixNombre = nombreOk.value;
-        console.log("Nombre : " + choixNombre);
-
     //Bouton panier & Panier
-    let panier = {
-        id:"",
-        couleur:"",
-        quantite: "",  
-    }
-    if (choixCouleur == ""){
-        alert("Veuillez choisir une couleur");
-    }
-    if (choixNombre == 0){
-        alert("Veuillez choisir une quantité");
-    }
-    if(choixCouleur != "" && choixNombre != 0){
-    panier.id = idSeul;
-    panier.couleur = choixCouleur;
-    panier.quantite = choixNombre;
-    localStorage.setItem('panier', JSON.stringify(panier));
+        let produit = {
+            id:"",
+            couleur:"",
+            quantite: "", 
+        };
+        panier.push(produit);
+
+        //Récupération couleur
+        let couleurOk = document.querySelector("#colors")
+        let choixCouleur = couleurOk.value;
+            console.log("Couleur : " + choixCouleur);
+
+        //Récupération quantité
+        let nombreOk = document.querySelector("#quantity");
+        let choixNombre = nombreOk.value;
+            console.log("Nombre : " + choixNombre);
+
+        //Alerte couleur vide
+        if (choixCouleur == ""){
+            alert("Veuillez choisir une couleur");
+        }
+        //Alerte qtité vide
+        if (choixNombre == 0){
+            alert("Veuillez choisir une quantité");
+        }
+        //Si tout est ok
+        if(choixCouleur != "" && choixNombre != 0){
+
+            //On injecte les données du produit
+            produit.id = idSeul;
+            produit.couleur = choixCouleur;
+            produit.quantite = choixNombre;
+        
+            console.log(panier);
+
+            //Sauvegarde dans le localstorage en json
+            localStorage.setItem('panier', JSON.stringify(panier));
     }
 })
+
+
+            //Création d'une condition pour fusionner les produits similaires
+            // Vérifiez s'il existe déjà un produit avec le même ID dans le panier
+            //if (panier["produit"] && panier["produit"].id == produit.id) {
+            //    panier["produit"].quantite++;
+            //} 
+            // Sinon, créez un nouveau produit en ajoutant 1 au numéro du produit
+            //else {
+            //  panier["produit"] = produit;
+            //}
