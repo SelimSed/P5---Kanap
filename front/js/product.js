@@ -39,7 +39,6 @@ panierBtn.addEventListener("click", ajoutPanier =>{
             couleur:"",
             quantite: "", 
         };
-        panier.push(produit);
 
         //Récupération couleur
         let couleurOk = document.querySelector("#colors")
@@ -66,6 +65,33 @@ panierBtn.addEventListener("click", ajoutPanier =>{
             produit.id = idSeul;
             produit.couleur = choixCouleur;
             produit.quantite = choixNombre;
+
+            //Fonction pour vérifier si le produit est présent dans le panier
+            function produitDejaPresent(produit) {
+                for (let i = 0; i < panier.length; i++) {
+                  if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
+                    return true;
+                  }
+                }
+                return false;
+              }
+
+            // Fonction pour ajouter la quantité d'un produit déjà présent dans le panier
+            function ajouterQuantiteAuProduit(produit) {
+            for (let i = 0; i < panier.length; i++) {
+                if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
+                panier[i].quantite += produit.quantite;
+                break;
+                }
+            }
+            }
+
+             // Condition pour le push
+            if (produitDejaPresent(produit)) {
+                ajouterQuantiteAuProduit(produit);
+            } else {
+                panier.push(produit);
+            }
         
             console.log(panier);
 
