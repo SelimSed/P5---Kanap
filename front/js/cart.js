@@ -16,17 +16,16 @@ for(let i = 0; i < panier.length; i++){
         console.log(produit);
 
         //Boucle pour rechercher les infos des produits un par un
-        for (let a = 0; a < panier.length; a++) {
-            let panierId = panier[a].id;
-            let panierColor = panier[a].couleur;
-            let panierQuantite = panier[a].quantite;
+            let panierId = panier[i].id;
+            let panierColor = panier[i].couleur;
+            let panierQuantite = panier[i].quantite;
             let imageUrl = produit.imageUrl;
             let altTxt = produit.altTxt;
             let productName = produit.name;
-            let price = produit.price;
+            let price = produit.price * panierQuantite;
 
             let panierComplet = ""
-            panierComplet += 
+            panierComplet = 
             `<article class="cart__item" data-id="${panierId}" data-color="${panierColor}">
             <div class="cart__item__img">
             <img src="${imageUrl}" alt="${altTxt}">
@@ -35,7 +34,7 @@ for(let i = 0; i < panier.length; i++){
             <div class="cart__item__content__description">
                 <h2>${productName}</h2>
                 <p>${panierColor}</p>
-                <p>${price}</p>
+                <p>${price} €</p>
             </div>
             <div class="cart__item__content__settings">
                 <div class="cart__item__content__settings__quantity">
@@ -51,7 +50,6 @@ for(let i = 0; i < panier.length; i++){
         
             //Injecter les données
             document.querySelector('#cart__items').innerHTML = panierComplet
-        }
     }
     )
 }
