@@ -27,9 +27,12 @@ dataProduit.then(async (reponseData) => {
     document.querySelector('#colors').innerHTML = options;
 })
 
-let panier = []
 
-//Ajout panier
+//Gestion du panier
+let contenuLocalStorage = localStorage.getItem('panier') || '[]';
+let panier = JSON.parse(contenuLocalStorage);
+
+//Actions lors du clic sur le bouton
 let panierBtn = document.querySelector("#addToCart");
 panierBtn.addEventListener("click", ajoutPanier =>{
 
@@ -37,7 +40,7 @@ panierBtn.addEventListener("click", ajoutPanier =>{
         let produit = {
             id:"",
             couleur:"",
-            quantite: "", 
+            quantite: 0, 
         };
 
         //Récupération couleur
@@ -48,7 +51,7 @@ panierBtn.addEventListener("click", ajoutPanier =>{
         //Récupération quantité
         let nombreOk = document.querySelector("#quantity");
         let choixNombre = nombreOk.value;
-            console.log("Nombre : " + choixNombre);
+            console.log(nombreOk);
 
         //Alerte couleur vide
         if (choixCouleur == ""){
@@ -64,27 +67,7 @@ panierBtn.addEventListener("click", ajoutPanier =>{
             //On injecte les données du produit
             produit.id = idSeul;
             produit.couleur = choixCouleur;
-            produit.quantite = choixNombre;
-
-            //Fonction pour vérifier si le produit est présent dans le panier
-            function produitDejaPresent(produit) {
-                for (let i = 0; i < panier.length; i++) {
-                  if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
-                    return true;
-                  }
-                }
-                return false;
-              }
-
-            // Fonction pour ajouter la quantité d'un produit déjà présent dans le panier
-            function ajouterQuantiteAuProduit(produit) {
-            for (let i = 0; i < panier.length; i++) {
-                if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
-                panier[i].quantite += produit.quantite;
-                break;
-                }
-            }
-            }
+            produit.quantite = parseInt(choixNombre);
 
              // Condition pour le push
             if (produitDejaPresent(produit)) {
@@ -100,13 +83,22 @@ panierBtn.addEventListener("click", ajoutPanier =>{
     }
 })
 
+//Fonction pour vérifier si le produit est présent dans le panier
+function produitDejaPresent(produit) {
+    for (let i = 0; i < panier.length; i++) {
+        if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
+            return true;
+        }
+    }
+    return false;
+}
 
-            //Création d'une condition pour fusionner les produits similaires
-            // Vérifiez s'il existe déjà un produit avec le même ID dans le panier
-            //if (panier["produit"] && panier["produit"].id == produit.id) {
-            //    panier["produit"].quantite++;
-            //} 
-            // Sinon, créez un nouveau produit en ajoutant 1 au numéro du produit
-            //else {
-            //  panier["produit"] = produit;
-            //}
+// Fonction pour ajouter la quantité d'un produit déjà présent dans le panier
+function ajouterQuantiteAuProduit(produit) {
+    for (let i = 0; i < panier.length; i++) {
+        if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
+            panier[i].quantite += produit.quantite;
+                break;
+        }
+    }
+}
