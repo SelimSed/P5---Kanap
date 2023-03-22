@@ -49,7 +49,7 @@ for(let i = 0; i < panier.length; i++){
             </article>`;
         
             //Injecter les données
-            document.querySelector('#cart__items').innerHTML = panierComplet
+            document.querySelector('#cart__items').innerHTML += panierComplet
     }
     )
 }
