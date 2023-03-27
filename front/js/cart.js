@@ -15,7 +15,7 @@ for(let i = 0; i < panier.length; i++){
         let produit = await reponseData.json()
         console.log(produit);
 
-        //Boucle pour rechercher les infos des produits un par un
+        //Rechercher les infos des produits un par un
             let panierId = panier[i].id;
             let panierColor = panier[i].couleur;
             let panierQuantite = panier[i].quantite;
@@ -50,6 +50,28 @@ for(let i = 0; i < panier.length; i++){
         
             //Injecter les données
             document.querySelector('#cart__items').innerHTML += panierComplet
+
+            //MAJ des quantités
+            let inputQuantite = document.querySelector(".itemQuantity");
+            inputQuantite.addEventListener('blur', function() {
+
+                // Récupérer la valeur actuelle de l'input
+                let nvlleInput = inputQuantite.value;
+                inputQuantite.value = parseInt(nvlleInput);
+                console.log(nvlleInput);
+
+                //MAJ des variables
+                panierQuantite = nvlleInput;
+                price = produit.price * panierQuantite;
+                console.log(price);
+                
+                //Afficher les données
+                document.querySelector('.cart__item__content__description').innerHTML =
+                `<h2>${productName}</h2>
+                <p>${panierColor}</p>
+                <p>${price} €</p>`
+            });
+
     }
     )
 }
