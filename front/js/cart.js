@@ -79,6 +79,9 @@ for(let i = 0; i < panier.length; ++i){
                     newPrice = produit.price * panierQuantite;
                     console.log(newPrice);
 
+                    let couleurInput = pElements[0];
+                    console.log(couleurInput);
+
                     //Modifier l'ancien prix par le nouveau
                     let prixRemplace = pElements[1];
                     prixRemplace.textContent = newPrice;
@@ -92,9 +95,9 @@ for(let i = 0; i < panier.length; ++i){
                     let parentId = input.closest('.cart__item').getAttribute('data-id').toString();
                     console.log(parentId);
 
-                    // Parcourir le tableau et modifier la quantité
+                    // Parcourir le tableau et modifier la quantité si couleur et id égal
                     for (let j = 0; j < panier.length; ++j) {
-                        if (panier[j].id === parentId) {
+                        if (panier[j].id === parentId  && panier[j].couleur === couleurInput) {
                         panier[j].quantite = nvlleInput;
                         break;
                         }
@@ -105,10 +108,10 @@ for(let i = 0; i < panier.length; ++i){
                     localStorage.setItem("panier", JSON.stringify(panier));
 
                     // Rafraîchir la page
-                    location.reload();
+                    //location.reload();
                 });
             });
-            
+
             //----- BOUTTON SUPPRIMER -----
             let suppBouton = document.querySelectorAll('.deleteItem');
             
