@@ -56,6 +56,8 @@ for(let i = 0; i < panier.length; ++i){
             lesInputs.forEach(input => {
                 input.addEventListener('change', event => {
                     
+                //---- MAJ DU PRIX ----
+
                     //Localiser l'input rempli
                     let source = event.target;
                     console.log(source);
@@ -83,12 +85,30 @@ for(let i = 0; i < panier.length; ++i){
                     console.log(prixRemplace);
 
                     console.log(panier);
-                    //localStorage.setItem("panier", JSON.stringify(panier));
+
+                //-----MAJ DE LA QTITÉ-----
+                    
+                    //Localiser le bon id
+                    let parentId = input.closest('.cart__item').getAttribute('data-id').toString();
+                    console.log(parentId);
+
+                    // Parcourir le tableau et modifier la quantité
+                    for (let j = 0; j < panier.length; ++j) {
+                        if (panier[j].id === parentId) {
+                        panier[j].quantite = nvlleInput;
+                        break;
+                        }
+                        console.log(panier);
+                    }
+
+                    //MAJ du localstorage
+                    localStorage.setItem("panier", JSON.stringify(panier));
 
                     // Rafraîchir la page
-
+                    location.reload();
                 });
             });
+            
             //----- BOUTTON SUPPRIMER -----
             let suppBouton = document.querySelectorAll('.deleteItem');
             
@@ -103,9 +123,9 @@ for(let i = 0; i < panier.length; ++i){
                     // Recherche de l'index de la ligne à supprimer
                     let indexSupp = null;
 
-                    for (let j = 0; j < panier.length; ++j) {
-                        if (panier[j].id === parentId) {
-                        indexSupp = j;
+                    for (let k = 0; k < panier.length; ++k) {
+                        if (panier[k].id === parentId) {
+                        indexSupp = k;
                         break;
                         }
                         console.log(indexSupp);
