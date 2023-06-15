@@ -4,7 +4,7 @@ let panier = JSON.parse(panierJson);
 console.log(panier);
 
 //Création d'une boucle pour recuperer les différents id
-for(let i = 0; i < panier.length; i++){
+for(let i = 0; i < panier.length; ++i){
     let idFetch = panier[i].id;
 
     const dataProduit = fetch(`http://localhost:3000/api/products/${idFetch}`)
@@ -15,7 +15,6 @@ for(let i = 0; i < panier.length; i++){
 
         //Rechercher les infos des produits un par un
             let panierId = panier[i].id;
-            console.log(panierId);
             let panierColor = panier[i].couleur;
             let panierQuantite = panier[i].quantite;
             let imageUrl = produit.imageUrl;
@@ -50,36 +49,47 @@ for(let i = 0; i < panier.length; i++){
             //Injecter les données
             document.querySelector('#cart__items').innerHTML += panierComplet
 
-            //MAJ des quantités
-            let inputQuantite = document.querySelector(".itemQuantity");
-            inputQuantite.addEventListener('change', function() {
+            //----- MAJ DES QTITÉS ET PRIX -----
 
-                // Récupérer la valeur actuelle de l'input
-                let nvlleInput = inputQuantite.value;
-                inputQuantite.value = parseInt(nvlleInput);
-                console.log(nvlleInput);
+            //Cible les inputs et ecoute avec les changements avec "change"
+            let lesInputs = document.querySelectorAll(".itemQuantity");
+            lesInputs.forEach(input => {
+                input.addEventListener('change', event => {
+                    
+                    //Localiser l'input rempli
+                    let source = event.target;
+                    console.log(source);
+                    
+                    //Utiliser les parents de l'input pour remonter aux infos prix
+                    let parent1 = input.closest('.cart__item__content__settings');
+                    console.log(parent1);
+                    let parent2 = parent1.previousElementSibling;
+                    console.log(parent2);
+                    let pElements = parent2.querySelectorAll('p');
+                    console.log(pElements);
 
-                //MAJ des variables
-                panierQuantite = nvlleInput;
-                price = produit.price * panierQuantite;
-                console.log(price);
-                
-                //Localiser le bloc
-                let article = (document.querySelector('[data-id ="'+ panierId +'"]'));
+                    // Récupérer la valeur actuelle de l'input
+                    let nvlleInput = source.value;
+                    console.log(nvlleInput);
 
-                //let element = document.getElementById('.cart__item__content__description');
-                //console.log(element);
-                //let closestElement = element.closest('div');
-                //console.log(closestElement);
+                    //MAJ de la variable prix
+                    panierQuantite = nvlleInput;
+                    newPrice = produit.price * panierQuantite;
+                    console.log(newPrice);
 
-                //Afficher les données
-                article.querySelector('.cart__item__content__description').innerHTML =
-                `<h2>${productName}</h2>
-                <p>${panierColor}</p>
-                <p>${price} €</p>`
+                    //Modifier l'ancien prix par le nouveau
+                    let prixRemplace = pElements[1];
+                    prixRemplace.textContent = newPrice;
+                    console.log(prixRemplace);
+
+                    console.log(panier);
+                    //localStorage.setItem("panier", JSON.stringify(panier));
+
+                    // Rafraîchir la page
+
+                });
             });
-
-            //Bouton supprimer
+            //----- BOUTTON SUPPRIMER -----
             let suppBouton = document.querySelectorAll('.deleteItem');
             
             //Selection de l'ensemble des boutons supprimer
@@ -87,34 +97,33 @@ for(let i = 0; i < panier.length; i++){
                 button.addEventListener('click', () => {
                     
                     //Localiser le bon id
-                    let parentElement = button.closest('.cart__item').getAttribute('data-id');
-                    console.log(parentElement);
+                    let parentId = button.closest('.cart__item').getAttribute('data-id');
+                    console.log(parentId);
                     
                     // Recherche de l'index de la ligne à supprimer
-                    let indexSupp = -1;
+                    let indexSupp = null;
 
-                    for (let a = 0; a < panier.length; a++) {
-                        if (panier[a].id === parentElement) {
-                        indexSupp = a;
+                    for (let j = 0; j < panier.length; ++j) {
+                        if (panier[j].id === parentId) {
+                        indexSupp = j;
                         break;
                         }
                         console.log(indexSupp);
                     }
 
-                    // Vérification si l'index est valide (-1 si non trouvé)
-                    if (indexSupp !== -1) {
+                    // Vérification si l'index est valide (null si non trouvé)
+                    if (indexSupp !== null) {
                         panier.splice(indexSupp, 1);
                         console.log(panier);
 
-                        // Mettre à jour le panier dans le stockage local (localStorage) si nécessaire
+                        // Mettre à jour le panier dans le stockage localStorage
                         localStorage.setItem('panier', JSON.stringify(panier));
 
-                        // Rafraîchir la page ou effectuer d'autres actions nécessaires
+                        // Rafraîchir la page
                         location.reload();
                     }
                 });
             });
-            console.log('FIN');
     }
     )
 }
