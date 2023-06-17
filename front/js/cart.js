@@ -153,6 +153,14 @@ for(let i = 0; i < panier.length; ++i){
 
 //-----FORMULAIRE-----
 
+let contact = {
+    prenom: '',
+    nom: '',
+    adresse: '',
+    ville: '',
+    email: ''
+};
+
 //Pattern PRENOM
 let prenomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
 let prenomInput = document.getElementById('firstName');
@@ -163,9 +171,11 @@ prenomInput.addEventListener('change', () => {
 
     if (prenomPattern.test(prenomValue)) {
         prenomError.textContent = '';
+        contact.prenom = prenomValue;
     } else {
         prenomError.textContent = 'Prénom invalide';
     }
+    console.log(contact);
 });
 
 //Pattern NOM
@@ -178,6 +188,7 @@ nomInput.addEventListener('change', () => {
 
     if (nomPattern.test(nomValue)) {
         nomError.textContent = '';
+        contact.nom = nomValue;
     } else {
         nomError.textContent = 'Nom invalide';
     }
@@ -193,6 +204,7 @@ adresseInput.addEventListener('change', () => {
 
     if (adressePattern.test(adresseValue)) {
         adresseError.textContent = '';
+        contact.adresse = adresseValue;
     } else {
         adresseError.textContent = 'Adresse invalide';
     }
@@ -208,6 +220,7 @@ villeInput.addEventListener('change', () => {
 
     if (villePattern.test(villeValue)) {
         villeError.textContent = '';
+        contact.ville = villeValue;
     } else {
         villeError.textContent = 'Ville invalide';
     }
@@ -223,6 +236,7 @@ emailInput.addEventListener('change', () => {
 
     if (emailPattern.test(emailValue)) {
         emailError.textContent = '';
+        contact.email = emailValue;
     } else {
         emailError.textContent = 'Email invalide';
     }
