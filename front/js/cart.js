@@ -156,69 +156,74 @@ for(let i = 0; i < panier.length; ++i){
 //Pattern PRENOM
 let prenomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
 let prenomInput = document.getElementById('firstName');
+let prenomError = document.getElementById('firstNameErrorMsg');
 
 prenomInput.addEventListener('change', () => {
     let prenomValue = prenomInput.value;
 
     if (prenomPattern.test(prenomValue)) {
-        alert('Prénom valide');
+        prenomError.textContent = '';
     } else {
-        alert('Prénom invalide');
+        prenomError.textContent = 'Prénom invalide';
     }
 });
 
 //Pattern NOM
 let nomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
 let nomInput = document.getElementById('lastName');
+let nomError = document.getElementById('lastNameErrorMsg');
 
 nomInput.addEventListener('change', () => {
     let nomValue = nomInput.value;
 
     if (nomPattern.test(nomValue)) {
-        alert('Nom valide');
+        nomError.textContent = '';
     } else {
-        alert('Nom invalide');
+        nomError.textContent = 'Nom invalide';
     }
 });
 
 //Pattern ADRESSE
 let adressePattern = /^(?:\d{1,3})\s[A-Za-z0-9\s\-.'\u00C0-\u017F]{1,100}$/;
 let adresseInput = document.getElementById('address');
+let adresseError = document.getElementById('addressErrorMsg');
 
 adresseInput.addEventListener('change', () => {
     let adresseValue = adresseInput.value;
 
     if (adressePattern.test(adresseValue)) {
-        alert('Adresse valide');
+        adresseError.textContent = '';
     } else {
-        alert('Adresse invalide');
+        adresseError.textContent = 'Adresse invalide';
     }
 });
 
 //Pattern VILLE
 let villePattern = /^[A-Za-z\u00C0-\u017F\s\-']+$/;
 let villeInput = document.getElementById('city');
+let villeError = document.getElementById('cityErrorMsg');
 
 villeInput.addEventListener('change', () => {
     let villeValue = villeInput.value;
 
     if (villePattern.test(villeValue)) {
-        alert('Ville valide');
+        villeError.textContent = '';
     } else {
-        alert('Ville invalide');
+        villeError.textContent = 'Ville invalide';
     }
 });
 
 //Pattern EMAIL
 let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 let emailInput = document.getElementById('email');
+let emailError = document.getElementById('emailErrorMsg');
 
 emailInput.addEventListener('change', () => {
     let emailValue = emailInput.value;
 
     if (emailPattern.test(emailValue)) {
-        alert('Adresse e-mail valide');
+        emailError.textContent = '';
     } else {
-        alert('Adresse e-mail invalide');
+        emailError.textContent = 'Email invalide';
     }
 });
