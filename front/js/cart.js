@@ -97,7 +97,7 @@ for(let i = 0; i < panier.length; ++i){
 
                     // Parcourir le tableau et modifier la quantité si couleur et id égal
                     for (let j = 0; j < panier.length; ++j) {
-                        if (panier[j].id === parentId  && panier[j].couleur === couleurInput) {
+                        if (panier[j].id === parentId && panier[j].couleur === couleurInput) {
                         panier[j].quantite = nvlleInput;
                         break;
                         }
@@ -150,3 +150,75 @@ for(let i = 0; i < panier.length; ++i){
     }
     )
 }
+
+//-----FORMULAIRE-----
+
+//Pattern PRENOM
+let prenomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
+let prenomInput = document.getElementById('firstName');
+
+prenomInput.addEventListener('change', () => {
+    let prenomValue = prenomInput.value;
+
+    if (prenomPattern.test(prenomValue)) {
+        alert('Prénom valide');
+    } else {
+        alert('Prénom invalide');
+    }
+});
+
+//Pattern NOM
+let nomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
+let nomInput = document.getElementById('lastName');
+
+nomInput.addEventListener('change', () => {
+    let nomValue = nomInput.value;
+
+    if (nomPattern.test(nomValue)) {
+        alert('Nom valide');
+    } else {
+        alert('Nom invalide');
+    }
+});
+
+//Pattern ADRESSE
+let adressePattern = /^(?:\d{1,3})\s[A-Za-z0-9\s\-.'\u00C0-\u017F]{1,100}$/;
+let adresseInput = document.getElementById('address');
+
+adresseInput.addEventListener('change', () => {
+    let adresseValue = adresseInput.value;
+
+    if (adressePattern.test(adresseValue)) {
+        alert('Adresse valide');
+    } else {
+        alert('Adresse invalide');
+    }
+});
+
+//Pattern VILLE
+let villePattern = /^[A-Za-z\u00C0-\u017F\s\-']+$/;
+let villeInput = document.getElementById('city');
+
+villeInput.addEventListener('change', () => {
+    let villeValue = villeInput.value;
+
+    if (villePattern.test(villeValue)) {
+        alert('Ville valide');
+    } else {
+        alert('Ville invalide');
+    }
+});
+
+//Pattern EMAIL
+let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+let emailInput = document.getElementById('email');
+
+emailInput.addEventListener('change', () => {
+    let emailValue = emailInput.value;
+
+    if (emailPattern.test(emailValue)) {
+        alert('Adresse e-mail valide');
+    } else {
+        alert('Adresse e-mail invalide');
+    }
+});
