@@ -192,6 +192,7 @@ nomInput.addEventListener('change', () => {
     } else {
         nomError.textContent = 'Nom invalide';
     }
+    console.log(contact);
 });
 
 //Pattern ADRESSE
@@ -208,6 +209,7 @@ adresseInput.addEventListener('change', () => {
     } else {
         adresseError.textContent = 'Adresse invalide';
     }
+    console.log(contact);
 });
 
 //Pattern VILLE
@@ -224,6 +226,7 @@ villeInput.addEventListener('change', () => {
     } else {
         villeError.textContent = 'Ville invalide';
     }
+    console.log(contact);
 });
 
 //Pattern EMAIL
@@ -240,4 +243,35 @@ emailInput.addEventListener('change', () => {
     } else {
         emailError.textContent = 'Email invalide';
     }
+    console.log(contact);
+});
+
+//Bouton COMMANDER
+let orderButton = document.getElementById('order');
+
+orderButton.addEventListener('click', event => {
+  let champsRemplis = true;
+
+  let cleInputs = ['firstName', 'lastName', 'address', 'city', 'email'];
+  for (let idInput of cleInputs) {
+    let input = document.getElementById(idInput);
+    if (input.value === '') {
+      champsRemplis = false;
+      break;
+    }
+  }
+
+  let erreurEnsembleMessages = document.querySelectorAll('.error-message');
+  for (let erreurMessage of erreurEnsembleMessages) {
+    if (erreurMessage.textContent !== '') {
+      champsRemplis = false;
+      break;
+    }
+  }
+
+  if (champsRemplis) {
+    window.location.href = "../html/confirmation.html";
+  } else {
+    alert('Veuillez remplir tous les champs correctement.');
+  }
 });
