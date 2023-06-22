@@ -51,6 +51,10 @@ for(let i = 0; i < panier.length; ++i){
 
             //----- MAJ DES QTITÉS ET PRIX -----
 
+            //-----TOTAL-----
+            let totalPrix = 0;
+            let totalQuantite = 0;
+
             //Cible les inputs et ecoute avec les changements avec "change"
             let lesInputs = document.querySelectorAll(".itemQuantity");
             lesInputs.forEach(input => {
@@ -79,30 +83,35 @@ for(let i = 0; i < panier.length; ++i){
                     newPrice = produit.price * panierQuantite;
                     console.log(newPrice);
 
-                    let couleurInput = pElements[0];
+                    let couleurInput = pElements[0].textContent;
+
                     console.log(couleurInput);
+                    console.log(typeof couleurInput);
+
 
                     //Modifier l'ancien prix par le nouveau
                     let prixRemplace = pElements[1];
                     prixRemplace.textContent = newPrice;
                     console.log(prixRemplace);
-
-                    console.log(panier);
-
+                    
                 //-----MAJ DE LA QTITÉ-----
                     
                     //Localiser le bon id
                     let parentId = input.closest('.cart__item').getAttribute('data-id').toString();
+                    
+                    console.log(panier);
                     console.log(parentId);
+                    console.log(couleurInput);
 
-                    // Parcourir le tableau et modifier la quantité si couleur et id égal
-                    for (let j = 0; j < panier.length; ++j) {
-                        if (panier[j].id === parentId && panier[j].couleur === couleurInput) {
+                    //Parcourir le tableau et localiser l'index à modifier
+                    let j = panier.findIndex(element => element.id == parentId && element.couleur == couleurInput);
+                    console.log(j);
+                    //Modifier la quantité localisée
+                    if (j !== -1) {
                         panier[j].quantite = nvlleInput;
-                        break;
-                        }
-                        console.log(panier);
-                    }
+                      }
+
+                    console.log(panier);
 
                     //MAJ du localstorage
                     localStorage.setItem("panier", JSON.stringify(panier));
@@ -154,10 +163,10 @@ for(let i = 0; i < panier.length; ++i){
 //-----FORMULAIRE-----
 
 let contact = {
-    prenom: '',
-    nom: '',
-    adresse: '',
-    ville: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
     email: ''
 };
 
@@ -171,7 +180,7 @@ prenomInput.addEventListener('change', () => {
 
     if (prenomPattern.test(prenomValue)) {
         prenomError.textContent = '';
-        contact.prenom = prenomValue;
+        contact.firstName = prenomValue;
     } else {
         prenomError.textContent = 'Prénom invalide';
     }
@@ -188,7 +197,7 @@ nomInput.addEventListener('change', () => {
 
     if (nomPattern.test(nomValue)) {
         nomError.textContent = '';
-        contact.nom = nomValue;
+        contact.lastName = nomValue;
     } else {
         nomError.textContent = 'Nom invalide';
     }
@@ -205,7 +214,7 @@ adresseInput.addEventListener('change', () => {
 
     if (adressePattern.test(adresseValue)) {
         adresseError.textContent = '';
-        contact.adresse = adresseValue;
+        contact.address = adresseValue;
     } else {
         adresseError.textContent = 'Adresse invalide';
     }
@@ -222,7 +231,7 @@ villeInput.addEventListener('change', () => {
 
     if (villePattern.test(villeValue)) {
         villeError.textContent = '';
-        contact.ville = villeValue;
+        contact.city = villeValue;
     } else {
         villeError.textContent = 'Ville invalide';
     }
@@ -270,7 +279,24 @@ orderButton.addEventListener('click', event => {
   }
 
   if (champsRemplis) {
-    window.location.href = "../html/confirmation.html";
+    fetch('http://localhost:3000/api/products/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contact)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Récupération de l'identifiant de commande via réponse de l'API
+      let orderId = data.orderId;
+      console.log(orderId);
+      // Redirection vers la page de confirmation avec l'identifiant de commande
+      window.location.href = `/front/html/confirmation.html?commande=${orderId}`;
+    })
+    .catch(error => {
+      console.error('Erreur lors de l\'envoi de la requête', error);
+    });
   } else {
     alert('Veuillez remplir tous les champs correctement.');
   }
