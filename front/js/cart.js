@@ -160,7 +160,7 @@ for(let i = 0; i < panier.length; ++i){
     )
 }
 
-//-----FORMULAIRE-----
+//-----FORMULAIRE & TABLEAU PRODUIT POUR REQUETE POST-----
 
 let contact = {
     firstName: '',
@@ -169,6 +169,8 @@ let contact = {
     city: '',
     email: ''
 };
+
+let products = [];
 
 //Pattern PRENOM
 let prenomPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
@@ -253,51 +255,72 @@ emailInput.addEventListener('change', () => {
         emailError.textContent = 'Email invalide';
     }
     console.log(contact);
-});
-
-//Bouton COMMANDER
-let orderButton = document.getElementById('order');
-
-orderButton.addEventListener('click', event => {
-  let champsRemplis = true;
-
-  let cleInputs = ['firstName', 'lastName', 'address', 'city', 'email'];
-  for (let idInput of cleInputs) {
-    let input = document.getElementById(idInput);
-    if (input.value === '') {
-      champsRemplis = false;
-      break;
-    }
-  }
-
-  let erreurEnsembleMessages = document.querySelectorAll('.error-message');
-  for (let erreurMessage of erreurEnsembleMessages) {
-    if (erreurMessage.textContent !== '') {
-      champsRemplis = false;
-      break;
-    }
-  }
-
-  if (champsRemplis) {
-    fetch('http://localhost:3000/api/products/order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(contact)
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Récupération de l'identifiant de commande via réponse de l'API
-      let orderId = data.orderId;
-      console.log(orderId);
-      // Redirection vers la page de confirmation avec l'identifiant de commande
-      window.location.href = `/front/html/confirmation.html?commande=${orderId}`;
-    })
-    .catch(error => {
-      console.error('Erreur lors de l\'envoi de la requête', error);
     });
-  } else {
-    alert('Veuillez remplir tous les champs correctement.');
-  }
+
+    //Bouton COMMANDER
+    let orderButton = document.getElementById('order');
+
+    orderButton.addEventListener('click', event => {
+    let toutEstOK = true;
+
+    //Si les champs sont remplis
+    let cleInputs = ['firstName', 'lastName', 'address', 'city', 'email'];
+    for (let idInput of cleInputs) {
+    let input = document.getElementById(idInput);
+        if (input.value === '') {
+            toutEstOK = false;
+            break;
+        }
+    }
+
+    //Si il n'y a pas d'erreurs
+    let erreurEnsembleMessages = document.querySelectorAll('.error-message');
+    for (let erreurMessage of erreurEnsembleMessages) {
+        if (erreurMessage.textContent !== '') {
+            toutEstOK = false;
+            break;
+        }
+    }
+
+    //Ajout des id dans le tableau products
+    if (toutEstOK) {
+        panier.forEach((element) => {
+            products.push(element.id.toString());
+        });
+      }
+    console.log(products);
+
+
+    //REQUETE POST
+    if (toutEstOK) {
+        event.preventDefault(); //A SUPPRIMER APRES TEST -- BLOQUE LE REFRESH DE LA PAGE
+
+        //Parametre de la requete POST
+        fetch("http://localhost:3000/api/products/order", {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+
+            //Contenu de la requete POST
+            body: JSON.stringify({contact, products})
+        })
+
+        //Conversion de la reponse en json
+        .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                //Récupération de l'identifiant de commande via réponse de l'API
+                let orderId = data.orderId;
+                console.log(orderId);
+                //Redirection vers la page de confirmation avec l'identifiant de commande
+                window.location.href = `/front/html/confirmation.html?commande=${orderId}`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête', error);
+        });
+    } 
+    else {
+        alert('Veuillez remplir tous les champs correctement.');
+    }
 });
