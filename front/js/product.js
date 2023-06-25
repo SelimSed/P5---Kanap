@@ -27,6 +27,20 @@ dataProduit.then(async (reponseData) => {
     document.querySelector('#colors').innerHTML = options;
 })
 
+//Limite à 100 articles
+let input = document.querySelector('input[name="itemQuantity"]');
+
+input.addEventListener('input', () => {
+  let value = input.value;
+  
+  if (isNaN(value)) {
+    value = '';
+  } else {
+    value = Math.min(100, Math.max(0, parseInt(value)));
+  }
+  
+  input.value = value;
+});
 
 //Gestion du panier
 let contenuLocalStorage = localStorage.getItem('panier') || '[]';

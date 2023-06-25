@@ -3,6 +3,13 @@ let panierJson = localStorage.getItem('panier');
 let panier = JSON.parse(panierJson);
 console.log(panier);
 
+//-----TOTAL-----
+let totalQuantite = 0;
+let totalPrix = 0;
+
+document.getElementById("totalQuantity").textContent = totalQuantite;
+document.getElementById("totalPrice").textContent = totalPrix;
+
 //Création d'une boucle pour recuperer les différents id
 for(let i = 0; i < panier.length; ++i){
     let idFetch = panier[i].id;
@@ -17,6 +24,7 @@ for(let i = 0; i < panier.length; ++i){
             let panierId = panier[i].id;
             let panierColor = panier[i].couleur;
             let panierQuantite = panier[i].quantite;
+            let inputSolo = parseInt(panierQuantite);
             let imageUrl = produit.imageUrl;
             let altTxt = produit.altTxt;
             let productName = produit.name;
@@ -45,15 +53,19 @@ for(let i = 0; i < panier.length; ++i){
             </div>
             </div>
             </article>`;
-        
+
+            //MAJ du total quantite
+            totalQuantite += inputSolo;
+            document.getElementById("totalQuantity").textContent = totalQuantite;
+
+            //MAJ du total prix
+            totalPrix += price;
+            document.getElementById("totalPrice").textContent = totalPrix;
+
             //Injecter les données
             document.querySelector('#cart__items').innerHTML += panierComplet
 
             //----- MAJ DES QTITÉS ET PRIX -----
-
-            //-----TOTAL-----
-            let totalPrix = 0;
-            let totalQuantite = 0;
 
             //Cible les inputs et ecoute avec les changements avec "change"
             let lesInputs = document.querySelectorAll(".itemQuantity");
@@ -112,12 +124,13 @@ for(let i = 0; i < panier.length; ++i){
                       }
 
                     console.log(panier);
+                    console.log(typeof panier[j].quantite);
 
                     //MAJ du localstorage
                     localStorage.setItem("panier", JSON.stringify(panier));
 
                     // Rafraîchir la page
-                    //location.reload();
+                    location.reload();
                 });
             });
 
