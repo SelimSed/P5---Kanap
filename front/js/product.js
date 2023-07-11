@@ -94,6 +94,8 @@ panierBtn.addEventListener("click", ajoutPanier =>{
 
             //Sauvegarde dans le localstorage en json
             localStorage.setItem('panier', JSON.stringify(panier));
+
+            alert('Produit ajouté au panier');
     }
 })
 
@@ -111,8 +113,13 @@ function produitDejaPresent(produit) {
 function ajouterQuantiteAuProduit(produit) {
     for (let i = 0; i < panier.length; i++) {
         if (panier[i].id === produit.id && panier[i].couleur === produit.couleur) {
-            panier[i].quantite += produit.quantite;
-                break;
+            // Vérifier si la quantité dépasse la limite de 100
+            if (panier[i].quantite + produit.quantite > 100) {
+                panier[i].quantite = 100; // Ajuster la quantité à 100
+            } else {
+                panier[i].quantite += produit.quantite;
+            }
+            break;
         }
     }
 }
