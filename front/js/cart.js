@@ -118,10 +118,15 @@ for(let i = 0; i < panier.length; ++i){
                     //Parcourir le tableau et localiser l'index à modifier
                     let j = panier.findIndex(element => element.id == parentId && element.couleur == couleurInput);
                     console.log(j);
-                    //Modifier la quantité localisée
+                    // Modifier la quantité localisée
                     if (j !== -1) {
-                        panier[j].quantite = nvlleInput;
-                      }
+                        // Vérifier si la quantité dépasse la limite de 100
+                        if (nvlleInput > 100) {
+                            panier[j].quantite = 100; // Ajuster la quantité à 100
+                        } else {
+                            panier[j].quantite = nvlleInput;
+                        }
+                    }
 
                     console.log(panier);
                     console.log(typeof panier[j].quantite);
